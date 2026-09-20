@@ -1,33 +1,34 @@
+Markdown
 # VS Musique
 
-VS Musique est une application Python connectee a Spotify permettant de creer, classer et comparer une bibliotheque musicale personnelle.
+**VS Musique** est une application Python connectée à Spotify permettant de créer, classer et comparer une bibliothèque musicale personnelle.
 
-L'application permet de recuperer des morceaux depuis Spotify, d'ajouter des titres manuellement, d'effectuer un tri rapide, d'affiner le classement avec des duels Elo, d'ecouter des extraits, d'afficher les pochettes et de creer une playlist Spotify avec les 100 meilleurs morceaux.
+L'application permet de récupérer des morceaux depuis Spotify, d'ajouter des titres manuellement, d'effectuer un tri rapide, d'affiner le classement avec des duels Elo, d'écouter des extraits, d'afficher les pochettes et de créer une playlist Spotify avec les 100 meilleurs morceaux.
 
 ---
 
-## Fonctionnalites
+## Fonctionnalités
 
 - Menu principal regroupant toutes les fonctions
-- Generation de la bibliotheque depuis Spotify
-- Import de l'historique Spotify etendu
-- Conservation du classement lors d'une nouvelle generation
+- Génération de la bibliothèque depuis Spotify
+- Import de l'historique Spotify étendu
+- Conservation du classement lors d'une nouvelle génération
 - Ajout manuel de morceaux
 - Recherche de morceaux sur Spotify
-- Detection des doublons
+- Détection des doublons
 - Tri rapide par paliers
 - Duels avec classement Elo
 - Pochettes d'albums
 - Extraits Spotify
 - Sauvegarde automatique
-- Reprise apres fermeture
+- Reprise après fermeture
 - Annulation du dernier choix
 - Classement complet avec recherche
-- Integration de nouveaux morceaux apres la fin du classement
-- Creation d'une playlist Spotify Top 100
-- Nom personnalise pour la playlist
-- Playlist publique ou privee
-- Progression de creation affichee en temps reel
+- Intégration de nouveaux morceaux après la fin du classement
+- Création d'une playlist Spotify Top 100
+- Nom personnalisé pour la playlist
+- Playlist publique ou privée
+- Progression de création affichée en temps réel
 
 ---
 
@@ -49,290 +50,245 @@ spotify_versus/
 |-- playlist_creator.py
 |-- scores.json
 `-- pochettes/
-```
+Description des fichiers
+main.py : menu général de l'application
 
-### Description des fichiers
+moteur.py : logique Elo, Spotify, extraits et pochettes
 
-- main.py : menu general de l'application
-- moteur.py : logique Elo, Spotify, extraits et pochettes
-- generer_liste.py : genere ou actualise la bibliotheque
-- ajouter_musique.py : ajoute manuellement un morceau
-- tri_rapide.py : premiere phase de classement
-- duels_elo.py : deuxieme phase avec les duels Elo
-- playlist_creator.py : genere la playlist Spotify Top 100
-- scores.json : stocke les morceaux, les scores et les metadonnees
+generer_liste.py : génère ou actualise la bibliothèque
 
----
+ajouter_musique.py : ajoute manuellement un morceau
 
-## Prerequis
+tri_rapide.py : première phase de classement
 
-- Python 3.10 ou plus recent
-- Un compte Spotify
-- Une application Spotify Developer
-- Spotify Premium pour piloter la lecture
-- Spotify ouvert sur un appareil pour ecouter les extraits
+duels_elo.py : deuxième phase avec les duels Elo
 
----
+playlist_creator.py : génère la playlist Spotify Top 100
 
-## Installation
+scores.json : stocke les morceaux, les scores et les métadonnées
 
-Cloner le depot :
+Prérequis
+Python 3.10 ou plus récent
 
-```bash
-git clone https://github.com/Azarjoe/spotify_versus.git
+Un compte Spotify
+
+Une application Spotify Developer
+
+Spotify Premium pour piloter la lecture
+
+Spotify ouvert sur un appareil pour écouter les extraits
+
+Installation
+Cloner le dépôt :
+
+Bash
+git clone [https://github.com/Azarjoe/spotify_versus.git](https://github.com/Azarjoe/spotify_versus.git)
 cd spotify_versus
-```
+Installer les dépendances :
 
-Installer les dependances :
-
-```bash
+Bash
 pip install -r requirements.txt
-```
-
 Le fichier requirements.txt doit contenir :
 
-```text
+Plaintext
 spotipy
 pillow
-```
+Configuration Spotify
+Créer un fichier nommé .env à la racine du projet :
 
----
-
-## Configuration Spotify
-
-Creer un fichier nomme .env a la racine du projet :
-
-```env
+Extrait de code
 SPOTIPY_CLIENT_ID=ton_client_id
 SPOTIPY_CLIENT_SECRET=ton_client_secret
-SPOTIPY_REDIRECT_URI=http://127.0.0.1:8888/callback
-```
+SPOTIPY_REDIRECT_URI=[http://127.0.0.1:8888/callback](http://127.0.0.1:8888/callback)
+Ajouter également cette adresse dans les paramètres de l'application Spotify Developer :
 
-Ajouter egalement cette adresse dans les parametres de l'application Spotify Developer :
-
-```text
-http://127.0.0.1:8888/callback
-```
-
+Plaintext
+[http://127.0.0.1:8888/callback](http://127.0.0.1:8888/callback)
 Ne jamais publier les fichiers suivants :
 
-```text
+Plaintext
 .env
 .cache-spotify-top
 .cache-spotify-lecture
 .cache-spotify-playlist
 scores.json
-```
-
----
-
-## Lancer l'application
-
-```bash
+Lancer l'application
+Bash
 python main.py
-```
-
 Le menu principal permet de :
 
-1. Generer ou actualiser la liste Spotify
-2. Ajouter une musique
-3. Lancer le tri rapide
-4. Lancer les duels Elo
-5. Voir le classement
-6. Creer la playlist Top 100
-7. Ouvrir le dossier du projet
-8. Actualiser les statistiques
+Générer ou actualiser la liste Spotify
 
----
+Ajouter une musique
 
-## Generer ou actualiser la bibliotheque
+Lancer le tri rapide
 
+Lancer les duels Elo
+
+Voir le classement
+
+Créer la playlist Top 100
+
+Ouvrir le dossier du projet
+
+Actualiser les statistiques
+
+Générer ou actualiser la bibliothèque
 Depuis l'API Spotify :
 
-```bash
+Bash
 python generer_liste.py
-```
+Si scores.json existe déjà, les morceaux existants conservent leur Elo, leur palier, leurs victoires, leurs défaites, leurs égalités et leurs métadonnées. Seuls les nouveaux morceaux sont ajoutés.
 
-Si scores.json existe deja, les morceaux existants conservent leur Elo, leur palier, leurs victoires, leurs defaites, leurs egalites et leurs metadonnees. Seuls les nouveaux morceaux sont ajoutes.
+Depuis un historique Spotify étendu :
 
-Depuis un historique Spotify etendu :
-
-```bash
+Bash
 python generer_liste.py --historique mon_export.zip --nombre 200
-```
+Le script analyse l'historique et compte les écoutes ayant duré au moins 30 secondes.
 
-Le script analyse l'historique et compte les ecoutes ayant dure au moins 30 secondes.
-
----
-
-## Ajouter un morceau
-
-```bash
+Ajouter un morceau
+Bash
 python ajouter_musique.py
-```
-
 L'interface permet de saisir un artiste et un titre, de rechercher le morceau sur Spotify, de choisir la bonne version et d'enregistrer son URI Spotify.
 
-Les doublons sont detectes meme si la casse ou les espaces sont differents.
+Les doublons sont détectés même si la casse ou les espaces sont différents.
 
----
-
-## Tri rapide
-
-```bash
+Tri rapide
+Bash
 python tri_rapide.py
-```
-
 Paliers disponibles :
 
-```text
+Plaintext
 1 : S - J'adore       - Elo 1120
 2 : A - J'aime bien   - Elo 1060
 3 : B - Correct       - Elo 1000
 4 : C - Bof           - Elo 940
 5 : D - Pas pour moi  - Elo 880
-```
-
 Autres commandes :
 
-```text
-Espace          : reecouter
+Plaintext
+Espace          : réécouter
 P               : passer temporairement
-Retour arriere  : annuler
-```
+Retour arrière  : annuler
+Le palier sert uniquement de point de départ. Les duels Elo corrigent ensuite le classement.
 
-Le palier sert uniquement de point de depart. Les duels Elo corrigent ensuite le classement.
-
----
-
-## Duels Elo
-
-```bash
+Duels Elo
+Bash
 python duels_elo.py
-```
-
 Commandes :
 
-```text
-Fleche gauche   : voter pour le morceau de gauche
-Fleche droite   : voter pour le morceau de droite
-Fleche bas      : egalite
-1               : ecouter le morceau de gauche
-2               : ecouter le morceau de droite
-Retour arriere  : annuler le dernier vote
-```
-
-Par defaut, chaque morceau doit effectuer huit duels.
+Plaintext
+Flèche gauche   : voter pour le morceau de gauche
+Flèche droite   : voter pour le morceau de droite
+Flèche bas      : égalité
+1               : écouter le morceau de gauche
+2               : écouter le morceau de droite
+Retour arrière  : annuler le dernier vote
+Par défaut, chaque morceau doit effectuer huit duels.
 
 Pour demander douze duels :
 
-```bash
+Bash
 python duels_elo.py --matchs 12
-```
-
 Les adversaires sont choisis parmi les morceaux ayant un Elo proche.
 
-Un nouveau morceau peut affronter des morceaux ayant deja atteint leur quota. Le classement ne bloque donc plus lorsqu'un seul nouveau morceau est ajoute.
+Un nouveau morceau peut affronter des morceaux ayant déjà atteint leur quota. Le classement ne bloque donc plus lorsqu'un seul nouveau morceau est ajouté.
 
----
-
-## Classement
-
+Classement
 Le bouton Voir le classement affiche :
 
-- Le rang
-- L'artiste
-- Le titre
-- L'Elo
-- Le palier
-- Le nombre de matchs
-- Les victoires
-- Les defaites
-- Les egalites
+Le rang
+
+L'artiste
+
+Le titre
+
+L'Elo
+
+Le palier
+
+Le nombre de matchs
+
+Les victoires
+
+Les défaites
+
+Les égalités
 
 Une barre de recherche permet de filtrer le classement par artiste ou par titre.
 
----
-
-## Playlist Spotify Top 100
-
-Depuis le menu principal, cliquer sur Creer la playlist Top 100.
+Playlist Spotify Top 100
+Depuis le menu principal, cliquer sur Créer la playlist Top 100.
 
 L'application demande :
 
-1. Le nom de la playlist
-2. Si la playlist doit etre publique ou privee
+Le nom de la playlist
 
-Les 100 meilleurs morceaux sont selectionnes selon leur Elo.
+Si la playlist doit être publique ou privée
 
-Une fenetre affiche la progression en temps reel :
+Les 100 meilleurs morceaux sont sélectionnés selon leur Elo.
 
-- Connexion a Spotify
-- Preparation des morceaux
-- Recherche des URI manquantes
-- Creation de la playlist
-- Ajout des morceaux
-- Pourcentage de progression
-- Confirmation finale
-- Erreurs eventuelles
+Une fenêtre affiche la progression en temps réel :
 
-La playlist peut aussi etre creee en ligne de commande :
+Connexion à Spotify
 
-```bash
+Préparation des morceaux
+
+Recherche des URI manquantes
+
+Création de la playlist
+
+Ajout des morceaux
+
+Pourcentage de progression
+
+Confirmation finale
+
+Erreurs éventuelles
+
+La playlist peut aussi être créée en ligne de commande :
+
+Bash
 python playlist_creator.py --nom "Mon Top 100"
-```
+Playlist privée :
 
-Playlist privee :
-
-```bash
+Bash
 python playlist_creator.py --nom "Mon Top 100" --privee
-```
+Nombre personnalisé de morceaux :
 
-Nombre personnalise de morceaux :
-
-```bash
+Bash
 python playlist_creator.py --nom "Mon Top 50" --nombre 50
-```
+Extraits Spotify
+Par défaut, un extrait commence à 35 % du morceau et dure 20 secondes.
 
----
+Ces réglages se trouvent dans moteur.py :
 
-## Extraits Spotify
-
-Par defaut, un extrait commence a 35 pour cent du morceau et dure 20 secondes.
-
-Ces reglages se trouvent dans moteur.py :
-
-```python
+Python
 EXTRAIT_DEBUT = 0.35
 EXTRAIT_DUREE_S = 20
-```
+Spotify doit être ouvert sur un appareil actif.
 
-Spotify doit etre ouvert sur un appareil actif.
+Si aucun appareil n'est détecté :
 
-Si aucun appareil n'est detecte :
+Ouvrir Spotify
 
-1. Ouvrir Spotify
-2. Lancer un morceau
-3. Mettre le morceau en pause
-4. Reessayer dans VS Musique
+Lancer un morceau
 
----
+Mettre le morceau en pause
 
-## Sauvegarde
+Réessayer dans VS Musique
 
-Les donnees sont enregistrees automatiquement apres chaque choix, duel, annulation, ajout manuel ou recuperation de metadonnees.
+Sauvegarde
+Les données sont enregistrées automatiquement après chaque choix, duel, annulation, ajout manuel ou récupération de métadonnées.
 
-L'ecriture de scores.json est atomique afin de reduire le risque de corruption.
+L'écriture de scores.json est atomique afin de réduire le risque de corruption.
 
-Il reste recommande de conserver regulierement une copie de scores.json.
+Il reste recommandé de conserver régulièrement une copie de scores.json.
 
----
-
-## Format de scores.json
-
+Format de scores.json
 Exemple :
 
-```json
+JSON
 {
     "Player - Baby Come Back": {
         "artiste": "Player",
@@ -342,57 +298,39 @@ Exemple :
         "defaites": 3,
         "egalites": 0,
         "spotify_uri": "spotify:track:41sGGCCoHI2GLV9qadX80A",
-        "pochette": "https://i.scdn.co/image/...",
+        "pochette": "[https://i.scdn.co/image/](https://i.scdn.co/image/)...",
         "duree_ms": 255845,
         "tier": "S"
     }
 }
-```
-
----
-
-## Depannage
-
+Dépannage
 Installer Spotipy :
 
-```bash
+Bash
 pip install spotipy
-```
-
 Installer Pillow :
 
-```bash
+Bash
 pip install pillow
-```
-
 Supprimer les caches Spotify si l'authentification ne fonctionne plus :
 
-```bash
+Bash
 rm -f .cache-spotify-top
 rm -f .cache-spotify-lecture
 rm -f .cache-spotify-playlist
-```
+Vérifier la syntaxe des scripts :
 
-Verifier la syntaxe des scripts :
-
-```bash
+Bash
 python -m py_compile main.py moteur.py generer_liste.py ajouter_musique.py tri_rapide.py duels_elo.py playlist_creator.py
-```
+Pour éviter les erreurs d'encodage Windows dans les sous-processus, main.py utilise :
 
-Pour eviter les erreurs d'encodage Windows dans les sous-processus, main.py utilise :
-
-```python
+Python
 environnement["PYTHONUNBUFFERED"] = "1"
 environnement["PYTHONIOENCODING"] = "utf-8"
-```
-
----
-
-## Securite
-
+Sécurité
 Le fichier .gitignore doit au minimum contenir :
 
-```gitignore
+Extrait de code
 .env
 .cache-spotify*
 scores.json
@@ -402,49 +340,51 @@ __pycache__/
 *.pyc
 *.tmp
 .venv/
-```
+Si un Client Secret a été publié, il faut le régénérer immédiatement depuis Spotify Developer.
 
-Si un Client Secret a ete publie, il faut le regenerer immediatement depuis Spotify Developer.
+Git
+Après une modification :
 
----
-
-## Git
-
-Apres une modification :
-
-```bash
+Bash
 git add .
 git commit -m "Description de la modification"
 git push
-```
+État actuel
+Fonctionnalités disponibles :
 
----
+Menu principal
 
-## Etat actuel
+Génération Spotify
 
-Fonctionnalites disponibles :
+Fusion avec le classement existant
 
-- Menu principal
-- Generation Spotify
-- Fusion avec le classement existant
-- Import de l'historique etendu
-- Ajout manuel
-- Recherche Spotify
-- Tri rapide
-- Duels Elo
-- Ajout tardif de morceaux
-- Pochettes
-- Extraits
-- Classement avec recherche
-- Playlist Top 100 personnalisee
-- Playlist publique ou privee
-- Progression en temps reel
-- Sauvegarde automatique
+Import de l'historique étendu
 
----
+Ajout manuel
 
-## Avertissement
+Recherche Spotify
 
-VS Musique est un projet independant et n'est pas affilie a Spotify.
+Tri rapide
 
-L'utilisateur est responsable de la confidentialite des identifiants Spotify, des fichiers de cache et des donnees d'ecoute.
+Duels Elo
+
+Ajout tardif de morceaux
+
+Pochettes
+
+Extraits
+
+Classement avec recherche
+
+Playlist Top 100 personnalisée
+
+Playlist publique ou privée
+
+Progression en temps réel
+
+Sauvegarde automatique
+
+Avertissement
+VS Musique est un projet indépendant et n'est pas affilié à Spotify.
+
+L'utilisateur est responsable de la confidentialité des identifiants Spotify, des fichiers de cache et des données d'écoute.
