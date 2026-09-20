@@ -88,24 +88,86 @@ def nouvelle_entree(artiste, musique, uri=None, streams=None):
 
 
 def ecrire_scores(entrees, chemin):
-    """Écrit le JSON final (sauvegarde l'ancien fichier s'il existe)."""
+    """
+    Fusionne les nouveaux morceaux avec scores.json.
+
+    Les morceaux existants conservent leur Elo, leurs matchs, leur palier
+    et leurs métadonnées. Seuls les nouveaux morceaux sont ajoutés.
+    """
+    data = {}
+
     if os.path.exists(chemin):
         horodatage = datetime.now().strftime("%Y%m%d-%H%M%S")
         base, ext = os.path.splitext(chemin)
         sauvegarde = f"{base}.backup-{horodatage}{ext}"
         shutil.copy2(chemin, sauvegarde)
-        print(f"Ancien fichier sauvegardé : {sauvegarde}")
+        print(f"Sauvegarde créée : {sauvegarde}")
 
-    data = {}
-    for e in entrees:
-        cle = f"{e['artiste']} - {e['musique']}"
-        if cle not in data:
-            data[cle] = e
+        try:
+            with open(chemin, "r", encoding="utf-8") as fichier:
+                data = json.load(fichier)
+        except (json.JSONDecodeError, OSError) as erreur:
+            sys.exit(f"Impossible de lire {chemin} : {erreur}")
 
-    with open(chemin, "w", encoding="utf-8") as f:
-        json.dump(data, f, indent=4, ensure_ascii=False)
+    index_existant = {}
+
+    for cle, info in data.items():
+        artiste = info.get("artiste", "")
+        musique = info.get("musique", info.get("titre", ""))
+
+        if artiste and musique:
+            index_existant[cle_normalisee(artiste, musique)] = cle
+
+    ajoutes = 0
+    actualises = 0
+
+    for entree in entrees:
+        artiste = entree["artiste"]
+        musique = entree["musique"]
+        identifiant = cle_normalisee(artiste, musique)
+
+        if identifiant in index_existant:
+            cle_existante = index_existant[identifiant]
+            existant = data[cle_existante]
+
+            # Complète uniquement les métadonnées manquantes.
+            # L'Elo, les matchs et le palier ne sont jamais réinitialisés.
+            for champ in ("spotify_uri", "streams", "pochette", "duree_ms"):
+                if entree.get(champ) is not None and not existant.get(champ):
+                    existant[champ] = entree[champ]
+                    actualises += 1
+
+            continue
+
+        cle = f"{artiste} - {musique}"
+
+        # Évite également une collision exceptionnelle de clé.
+        if cle in data:
+            suffixe = 2
+            cle_base = cle
+
+            while cle in data:
+                cle = f"{cle_base} ({suffixe})"
+                suffixe += 1
+
+        data[cle] = entree
+        index_existant[identifiant] = cle
+        ajoutes += 1
+
+    temporaire = chemin + ".tmp"
+
+    with open(temporaire, "w", encoding="utf-8") as fichier:
+        json.dump(data, fichier, indent=4, ensure_ascii=False)
+
+    os.replace(temporaire, chemin)
+
+    print(f"Nouveaux morceaux ajoutés : {ajoutes}")
+    print(f"Morceaux déjà présents : {len(entrees) - ajoutes}")
+
+    if actualises:
+        print(f"Métadonnées complétées : {actualises}")
+
     return len(data)
-
 
 # ──────────────────────────────────────────────────────────────
 # Source 1 : historique de streaming (export Spotify)
